@@ -1,0 +1,38 @@
+class KucingVirtual:
+    def __init__(self, nama):
+        self.nama = nama
+        self.energi = 50
+        self.kekenyangan = 50
+        self.is_alive = True
+        
+    def makan(self, porsi):
+        if self.is_alive:
+            self.kekenyangan += porsi
+            print(f"{self.nama} makan sebanyak {porsi} porsi. Kekenyangan naik!")
+        else:
+            print(f"{self.nama} sudah tidak bisa makan (Game Over).")
+            
+    def main(self, waktu):
+        if self.is_alive:
+            self.energi -= waktu * 5
+            self.kekenyangan -= waktu * 3
+            print(f"{self.nama} diajak bermain selama {waktu} jam. Energi berkurang.")
+            if self.energi <= 0 or self.kekenyangan <= 0:
+                self.is_alive = False
+                print(f"{self.nama} terlalu kelelahan dan kelaparan. Kucing mati!")
+        else:
+            print(f"{self.nama} sudah tiada.")
+            
+    def cek_status(self):
+        print(f"=== STATUS KUCING: {self.nama} ===")
+        print(f"Energi     : {self.energi}")
+        print(f"Kekenyangan: {self.kekenyangan}")
+        print(f"Status Hidup: {self.is_alive}")
+        print("---------------------------------")
+
+# Instansiasi Objek
+kucingku = KucingVirtual("Milo")
+kucingku.cek_status()
+kucingku.makan(30)
+kucingku.main(4)
+kucingku.cek_status()
