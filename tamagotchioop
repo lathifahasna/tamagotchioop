@@ -1,38 +1,61 @@
-class KucingVirtual:
+class Tamagotchi:
     def __init__(self, nama):
         self.nama = nama
-        self.energi = 50
         self.kekenyangan = 50
+        self.kebahagiaan = 50
+        self.energi = 50
+        self.is_sakit = False
         self.is_alive = True
         
     def makan(self, porsi):
-        if self.is_alive:
+        if self.is_alive and not self.is_sakit:
             self.kekenyangan += porsi
-            print(f"{self.nama} makan sebanyak {porsi} porsi. Kekenyangan naik!")
+            print(f"{self.nama} diberi makan {porsi} porsi. Kekenyangan bertambah!")
         else:
-            print(f"{self.nama} sudah tidak bisa makan (Game Over).")
+            print(f"{self.nama} tidak bisa makan karena sedang sakit atau Game Over.")
             
-    def main(self, waktu):
+    def main(self, durasi):
+        if self.is_alive and not self.is_sakit:
+            self.kebahagiaan += durasi * 10
+            self.energi -= durasi * 5
+            print(f"{self.nama} diajak bermain selama {durasi} jam. Kebahagiaan bertambah, tetapi energi berkurang.")
+            if self.energi <= 10:
+                self.is_sakit = True
+                print(f"Perhatian! {self.nama} kelelahan dan jatuh sakit!")
+        else:
+            print(f"{self.nama} tidak bisa bermain.")
+            
+    def tidur(self, jam):
         if self.is_alive:
-            self.energi -= waktu * 5
-            self.kekenyangan -= waktu * 3
-            print(f"{self.nama} diajak bermain selama {waktu} jam. Energi berkurang.")
-            if self.energi <= 0 or self.kekenyangan <= 0:
-                self.is_alive = False
-                print(f"{self.nama} terlalu kelelahan dan kelaparan. Kucing mati!")
+            self.energi += jam * 15
+            self.kekenyangan -= jam * 2
+            print(f"{self.nama} tidur selama {jam} jam. Energi pulih kembali.")
         else:
             print(f"{self.nama} sudah tiada.")
             
-    def cek_status(self):
-        print(f"=== STATUS KUCING: {self.nama} ===")
-        print(f"Energi     : {self.energi}")
-        print(f"Kekenyangan: {self.kekenyangan}")
+    def mengobati(self):
+        if self.is_alive and self.is_sakit:
+            self.is_sakit = False
+            self.energi = 40
+            print(f"{self.nama} telah diberi obat dan sekarang sudah sembuh!")
+        else:
+            print(f"{self.nama} tidak butuh obat atau sudah Game Over.")
+            
+    def info_status(self):
+        print(f"=== STATUS TAMAGOTCHI: {self.nama} ===")
+        print(f"Kekenyangan : {self.kekenyangan}")
+        print(f"Kebahagiaan : {self.kebahagiaan}")
+        print(f"Energi      : {self.energi}")
+        print(f"Status Sakit: {self.is_sakit}")
         print(f"Status Hidup: {self.is_alive}")
-        print("---------------------------------")
+        print("---------------------------------------")
 
-# Instansiasi Objek
-kucingku = KucingVirtual("Milo")
-kucingku.cek_status()
-kucingku.makan(30)
-kucingku.main(4)
-kucingku.cek_status()
+# --- INSTANSIASI OBJEK & PENGUJIAN ---
+pet = Tamagotchi("Mochi")
+pet.info_status()
+pet.makan(30)
+pet.main(8)  # Energi akan terkuras drastis dan membuat peliharaan sakit
+pet.info_status()
+pet.mengobati()
+pet.tidur(4)
+pet.info_status()
